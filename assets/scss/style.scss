@@ -1,0 +1,132 @@
+@import 'partials/variables';
+@import 'partials/mixins';
+
+table#inpsyde-leo-test-users-table {
+	border-collapse: collapse;
+	width: 100%;
+	color:$table-header-background;
+	
+	a {
+		text-decoration: none;
+	}
+
+	th, td {
+		border: 1px solid $light-gray;
+		padding: 8px;
+		text-align: left;
+	}
+
+	thead {
+		th {
+			background-color: $table-header-background;
+			color: $white;
+		}
+
+		tr.instructions th {
+			background-color: $table-hover-background;
+			color: $table-header-background;
+			font-weight: normal;
+			font-size:12px;
+
+			span.dashicons {
+				vertical-align: -5px;
+  				margin-right: 3px;
+			}
+		}
+	}
+  
+	tbody {
+		tr:hover {
+			background-color: $table-hover-background;
+			cursor:pointer;
+		}
+	
+		tr.selected {
+			background-color: $table-selected-background;
+			
+			a {
+				color: $table-selected-text;
+			}
+
+			&:hover a {
+				color:$table-header-background;
+			}
+		}
+	}
+  }
+
+.inpsyde-leo-test-dynamic-user-data-container {
+
+	border: 1px solid #ccc;
+	border-radius: 8px;
+
+	#inpsyde-leo-test-loading-gif {
+		display:none;
+		font-size:14px;
+		font-style:italic;
+		padding:20px;
+
+		img {
+			vertical-align:-2px;
+			margin-right:5px;
+		}
+	}
+
+	.user-profile {
+		display: flex;
+		max-width: 600px;
+		margin: 20px auto;
+		padding:5px 20px;
+
+		@include for-phone-only {
+			margin-top:15px;
+
+			p {
+				font-size:16px;
+			}
+		}
+
+		.avatar {
+			width: 70px;
+			height: 70px;
+			border-radius: 50%;
+			margin-right: 20px;
+
+			@include for-phone-only {
+				width:40px;
+				height:40px;
+				margin-right:15px;
+			}
+		}
+		
+		h2 {
+			margin-top:10px;
+			font-family:var(--wp--preset--font-family--body);
+
+			@include for-phone-only {
+				margin-top: 5px;
+				font-size:24px;
+			}
+		}
+
+		/* Styling for user details */
+		.user-details {
+			flex-grow: 1;
+		}
+		
+		/* Styling for the company information */
+		.company-info {
+			margin-top: 10px;
+		}
+		
+		/* Styling for links */
+		a {
+			color: #0073e6;
+			text-decoration: none;
+		}
+		
+		a:hover {
+			text-decoration: underline;
+		}
+	}
+}

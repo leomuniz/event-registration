@@ -1,0 +1,48 @@
+{
+    "name": "leomuniz/wp-event-registration",
+    "version": "1.0.0",
+    "description": "A WordPress plugin for event registration.",
+    "type": "wordpress-plugin",
+    "keywords": ["wordpress", "plugin", "event", "registration", "ticketing"],
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "leomuniz",
+            "email": "contact@leomuniz.dev"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "leomuniz\\Event_Registration\\": "app"
+        }
+    },
+    "require":{
+        "php": ">=8.0",
+        "composer/installers": "^1.10"
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0",
+		"brain/monkey": "^2.6",
+        "phpunit/phpunit": "^10.5"
+    },
+    "scripts": {
+        "phpcs": [
+            "vendor/bin/phpcs"
+        ],
+        "phpcbf": [
+            "vendor/bin/phpcbf"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/installers": true
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "./": ["type:wordpress-plugin"]
+        }
+    }
+}

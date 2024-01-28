@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress">
+
+    <description>WordPress Coding Standards.</description>
+
+    <file>./wp-event-registration.php</file>
+	<file>./app</file>
+	<file>./src</file>
+    <file>./views</file>
+
+	<arg name="extensions" value="php" />
+    <arg value="sp"/>
+    <arg name="colors"/>
+	<arg value="s" /> <!-- Show sniff names. -->
+
+    <config name="testVersion" value="8.0-"/>
+    <config name="text_domain" value="wp-event-registraton"/>
+
+    <!--
+        Prevent errors caused by WordPress Coding Standards and PHPCompatibility not supporting PHP 8.0+.
+        See https://github.com/WordPress/WordPress-Coding-Standards/issues/2035
+    -->
+    <ini name="error_reporting" value="E_ALL &#38; ~E_DEPRECATED" />
+
+	<rule ref="WordPress">
+		<!--
+			WordPress Coding Standards to naming files are not compliant with PSR4 recommendations.
+			And using PSR4 is a must to generate the Composer autoload file.
+		-->
+		<exclude name="WordPress.Files.FileName" />
+
+		<!--
+			Yoda condition is annoying and non-natural.
+		-->
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+
+		<!-- 
+			@throws tag instead of @Throws.
+		-->
+		<exclude name="Squiz.Commenting.FunctionComment.ThrowsNotCapital" />
+	</rule>
+
+</ruleset>

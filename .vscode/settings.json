@@ -1,0 +1,13 @@
+{
+	"phpsab.executablePathCS": "vendor/bin/phpcs",
+	"phpsab.executablePathCBF": "vendor/bin/phpcbf",
+	"phpsab.autoRulesetSearch": true,
+	"eslint.enable": true,
+	"eslint.validate": [
+	  "javascript",
+	  "javascriptreact"
+	],
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	}
+}
