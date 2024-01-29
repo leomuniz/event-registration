@@ -1,5 +1,5 @@
 {
-    "name": "leomuniz/wp-event-registration",
+    "name": "leomuniz/event-registration",
     "version": "1.0.0",
     "description": "A WordPress plugin for event registration.",
     "type": "wordpress-plugin",

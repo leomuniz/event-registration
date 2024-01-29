@@ -3,7 +3,7 @@
 
     <description>WordPress Coding Standards.</description>
 
-    <file>./wp-event-registration.php</file>
+    <file>./event-registration.php</file>
 	<file>./app</file>
 	<file>./src</file>
     <file>./views</file>
@@ -14,7 +14,7 @@
 	<arg value="s" /> <!-- Show sniff names. -->
 
     <config name="testVersion" value="8.0-"/>
-    <config name="text_domain" value="wp-event-registraton"/>
+    <config name="text_domain" value="event-registration"/>
 
     <!--
         Prevent errors caused by WordPress Coding Standards and PHPCompatibility not supporting PHP 8.0+.

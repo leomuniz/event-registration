@@ -3,7 +3,7 @@
  * Main class file.
  * Main execution flow of the plugin.
  *
- * @package leomuniz\wp-event-registration
+ * @package leomuniz\event-registration
  */
 
 declare(strict_types=1);
@@ -11,7 +11,10 @@ declare(strict_types=1);
 namespace leomuniz\Event_Registration\Core;
 
 use leomuniz\Event_Registration;
-use leomuniz\Event_Registration\Interfaces\Settings_Interface;
+use leomuniz\Event_Registration\Interfaces\{
+	Settings_Interface,
+	Admin_Pages_Interface
+};
 
 /**
  * Main class.
@@ -30,6 +33,15 @@ class Main {
 	private $settings;
 
 	/**
+	 * Settings class instance.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var leomuniz\Event_Registration\Core\Settings;
+	 */
+	private $admin_pages;
+
+	/**
 	 * __construct method.
 	 * Used to initiliaze the dependencies classes through the DI container.
 	 *
@@ -37,9 +49,10 @@ class Main {
 	 *
 	 * @param Settings_Interface $settings Settings class instance.
 	 */
-	public function __construct( Settings_Interface $settings ) {
+	public function __construct( Settings_Interface $settings, Admin_Pages_Interface $admin_pages ) {
 
-		$this->settings = $settings;
+		$this->settings    = $settings;
+		$this->admin_pages = $admin_pages;
 	}
 
 	/**
@@ -48,6 +61,7 @@ class Main {
 	 * @since 1.0.0
 	 */
 	public function load() {
+		
 	}
 
 	/**

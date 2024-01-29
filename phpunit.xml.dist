@@ -12,7 +12,7 @@
 	displayDetailsOnTestsThatTriggerWarnings="true"
 	>
     <testsuites>
-        <testsuite name="WP Event Registration">
+        <testsuite name="Event Registration">
             <directory phpVersion="8.0.0" phpVersionOperator=">=" suffix=".php">./tests/</directory>
             <exclude>./tests/includes/</exclude>
             <exclude>./tests/SampleTest.php</exclude>

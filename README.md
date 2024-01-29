@@ -1,1 +1,1 @@
-# WP Event Registration
+# Event Registration

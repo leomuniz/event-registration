@@ -3,7 +3,7 @@
  * Plugin class.
  * Implements a DI Container to load all plugin classes.
  *
- * @package leomuniz\wp-event-registration
+ * @package leomuniz\event-registration
  */
 
 declare(strict_types=1);

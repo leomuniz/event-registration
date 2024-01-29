@@ -4,7 +4,7 @@
  *
  * Settings Interface.
  *
- * @package leomuniz\wp-event-registration
+ * @package leomuniz\event-registration
  */
 
 declare(strict_types=1);

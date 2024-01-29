@@ -1,16 +1,16 @@
 <?php
 /**
- * WP Event Registration Plugin
+ * Event Registration
  *
- * @package leomuniz\wp-event-registration
+ * @package leomuniz\event-registration
  * @author            Léo Muniz
  * @copyright         2023 Léo Muniz
  * @license           GPL-3.0-or-later
  *
  * @wordpress-plugin
- * Plugin Name: WP Event Registration
+ * Plugin Name: Event Registration
  * Plugin URI: https://leomuniz.dev
- * Description: A WP plugin to manage event registration.
+ * Description: Manage event registration without worries.
  * Version: 1.0.0
  * Requires at least: 6.4
  * Requires PHP: 8.0
@@ -18,7 +18,7 @@
  * Author URI: https://leomuniz.dev
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wp-event-registration
+ * Text Domain: event-registration
  * Domain Path: /languages
  */
 
@@ -48,8 +48,9 @@ $package = Core\Plugin::instance();
 
 // Register plugin dependencies.
 $package->register( Core\Settings::class );
-//$package->register( Core\Admin\Pages::class );
 $package->register( Core\Main::class );
+
+$package->register( Admin\Pages::class );
 
 // Execute the load() function from the Main class.
 $package->execute( Core\Main::class );
