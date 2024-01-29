@@ -56,8 +56,8 @@ class Settings implements Settings_Interface {
 	 *
 	 * @return mixed Setting value.
 	 */
-	public function get(string $name): mixed {
-		return !empty($this->{$name}) ? $this->{$name} : null;
+	public function get( string $name ): mixed {
+		return ! empty( $this->{$name} ) ? $this->{$name} : null;
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Settings implements Settings_Interface {
 	 *
 	 * @return bool
 	 */
-	public function has(string $name): bool {
-		return isset($this->{$name});
+	public function has( string $name ): bool {
+		return isset( $this->{$name} );
 	}
 }

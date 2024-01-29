@@ -59,14 +59,16 @@ class Pages implements Admin_Pages_Interface {
 
 			if ( isset( $admin_page['sub_menus'] ) && is_array( $admin_page['sub_menus'] ) ) {
 
-				add_submenu_page(
-					$menu_slug,
-					$admin_page['sub_menu_label'],
-					$admin_page['sub_menu_label'],
-					$capability,
-					$menu_slug,
-					array( $this, 'render' )
-				);
+				if ( isset( $admin_page['sub_menu_label'] ) ) {
+					add_submenu_page(
+						$menu_slug,
+						$admin_page['sub_menu_label'],
+						$admin_page['sub_menu_label'],
+						$capability,
+						$menu_slug,
+						array( $this, 'render' )
+					);
+				}
 
 				foreach ( $admin_page['sub_menus'] as $sub_page ) {
 					$sub_menu_slug = isset( $sub_page['menu_slug'] ) ? $sub_page['menu_slug'] : sanitize_title_with_dashes( $sub_page['page_title'] );
@@ -92,6 +94,6 @@ class Pages implements Admin_Pages_Interface {
 	 * Renders the content of the admin page or submenu page.
 	 */
 	public function render() {
-		echo '<div id="" class="">Página</div>';
+		echo '<div id="page-content" class=""></div>';
 	}
 }
