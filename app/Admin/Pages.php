@@ -2,6 +2,7 @@
 
 namespace leomuniz\Event_Registration\Admin;
 
+use leomuniz\Event_Registration as Plugin;
 use leomuniz\Event_Registration\Interfaces\{
 	Admin_Pages_Interface,
 	Settings_Interface
@@ -16,6 +17,7 @@ use leomuniz\Event_Registration\Interfaces\{
  */
 class Pages implements Admin_Pages_Interface {
 	private $admin_pages = array();
+	private $pages_slugs = array();
 	private $pages_content = array();
 	private $settings;
 
@@ -30,6 +32,7 @@ class Pages implements Admin_Pages_Interface {
 
 		if ( $this->admin_pages ) {
 			add_action( 'admin_menu', array( $this, 'register' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		}
 	}
 
@@ -57,6 +60,8 @@ class Pages implements Admin_Pages_Interface {
 				array( $this, 'render' )
 			);
 
+			array_push( $this->pages_slugs, $menu_slug );
+
 			if ( isset( $admin_page['sub_menus'] ) && is_array( $admin_page['sub_menus'] ) ) {
 
 				if ( isset( $admin_page['sub_menu_label'] ) ) {
@@ -82,11 +87,9 @@ class Pages implements Admin_Pages_Interface {
 						array( $this, 'render' )
 					);
 
-					$page_slug = sanitize_title_with_dashes( $sub_page['page_title'] );
+					array_push( $this->pages_slugs, $sub_menu_slug );
 				}
 			}
-
-			$page_slug = sanitize_title_with_dashes( $admin_page['page_title'] );
 		}
 	}
 
@@ -94,6 +97,43 @@ class Pages implements Admin_Pages_Interface {
 	 * Renders the content of the admin page or submenu page.
 	 */
 	public function render() {
-		echo '<div id="page-content" class=""></div>';
+		?>
+		<div class="wrap">
+			<div id="page-content"></div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Enqueues the admin scripts.
+	 */
+	public function enqueue_admin_scripts() {
+
+		if ( empty ( $_GET['page'] ) ) { // phpcs:ignore
+			return;
+		}
+
+		$page_slug = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // phpcs:ignore
+
+		if ( ! in_array( $page_slug, $this->pages_slugs, true ) ) {
+			return;
+		}
+
+		// Fallback to default dependencies.
+		$deps = array(
+			'dependencies' => array( 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch' ),
+		);
+
+		if ( file_exists( Plugin\DIR . '/build/' . $page_slug . '.asset.php' ) ) {
+			$deps = require Plugin\DIR . '/build/' . $page_slug . '.asset.php';
+		}
+
+		wp_enqueue_script(
+			'event-registration-admin-' . $page_slug . '-script',
+			Plugin\URL . '/build/' . $page_slug . '.js',
+			$deps['dependencies'],
+			Plugin\VERSION,
+			true
+		);
 	}
 }

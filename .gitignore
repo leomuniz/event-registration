@@ -47,6 +47,7 @@ Thumbs.db
 # Ignore Folders #
 ##################
 /vendor/
+build/
 npm-debug.log
 node_modules
 .phpunit.cache

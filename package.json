@@ -1,39 +1,24 @@
 {
-	"name": "event-registration",
-	"version": "1.0.0",
-	"description": "A WordPress plugin for event registration.",
-	"main": "main.js",
-	"scripts": {
-		"watch": "npx grunt",
-		"lint": "eslint assets/js/*.js"
+	"dependencies": {
+		"@wordpress/api-fetch": "^6.47.0",
+		"@wordpress/element": "^5.27.0"
 	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/leomuniz/event-registrationt.git"
-	},
-	"keywords": [
-		"wordpress",
-		"plugin",
-		"event",
-		"registration",
-		"ticketing"
-	],
-	"author": "Leo Muniz",
-	"license": "GPL-3.0",
 	"devDependencies": {
-		"eslint": "^8.56.0",
-		"eslint-config-wordpress": "^2.0.0",
-		"eslint-plugin-jsdoc": "^48.0.2",
-		"grunt": "^1.4.1",
-		"grunt-cli": "^1.4.3",
-		"grunt-contrib-cssmin": "^5.0.0",
-		"grunt-contrib-sass": "^2.0.0",
-		"grunt-contrib-uglify": "^5.0.1",
-		"grunt-contrib-watch": "^1.1.0",
-		"sass": "^1.69.7"
+		"@wordpress/scripts": "^27.1.0"
 	},
-	"engines": {
-		"node": ">=16.20.2",
-		"npx": ">=8.19.4"
+	"scripts": {
+		"build": "wp-scripts build",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start",
+		"test:e2e": "wp-scripts test-e2e",
+		"test:unit": "wp-scripts test-unit-js"
 	}
 }
