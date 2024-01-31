@@ -2,16 +2,17 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
 const fs = require('fs');
 const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
 	...defaultConfig,
 	entry: {
-		...defaultConfig.entry,
+		...defaultConfig.entry(),
 		...getEntryPoints('admin'),
 		...getEntryPoints('frontend')
 	},
 	optimization: {
-		minimize: true,
+		...defaultConfig.optimization,
 		minimizer: [
 			new TerserPlugin({
 				terserOptions: {
@@ -24,6 +25,7 @@ module.exports = {
 				},
 				extractComments: false,
 			}),
+			new CssMinimizerPlugin(),
 		],
 	},
 };
@@ -35,7 +37,7 @@ function getEntryPoints(folderName) {
 	fs.readdirSync(folderPath).forEach(file => {
 		const filePath = path.resolve(folderPath, file);
 		const fileName = path.basename(file, path.extname(file));
-		entryPoints[fileName] = filePath;
+		entryPoints[folderName + '/' + fileName] = filePath;
 	});
 
 	return entryPoints;

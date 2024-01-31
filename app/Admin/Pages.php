@@ -130,7 +130,7 @@ class Pages implements Admin_Pages_Interface {
 
 		wp_enqueue_script(
 			'event-registration-admin-' . $page_slug . '-script',
-			Plugin\URL . '/build/' . $page_slug . '.js',
+			Plugin\URL . '/build/admin/' . $page_slug . '.js',
 			$deps['dependencies'],
 			Plugin\VERSION,
 			true
