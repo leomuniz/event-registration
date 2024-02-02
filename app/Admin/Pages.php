@@ -42,56 +42,74 @@ class Pages implements Admin_Pages_Interface {
 	 * @param string $context     The context of the admin page.
 	 * @param array  $admin_pages The admin pages to register.
 	 */
-	public function register( string $context = '', array $admin_pages = array() ) {
+	public function register( string $context = '', array $admin_pages = array() ): void {
 
 		if ( empty( $admin_pages ) ) {
 			$admin_pages = $this->admin_pages;
 		}
 
 		foreach ( $admin_pages as $admin_page ) {
-			$capability = isset( $admin_page['capability'] ) ? $admin_page['capability'] : 'manage_options';
-			$menu_slug  = isset( $admin_page['menu_slug'] ) ? $admin_page['menu_slug'] : sanitize_title_with_dashes( $admin_page['page_title'] );
 
-			add_menu_page(
-				$admin_page['page_title'],
-				$admin_page['menu_title'],
-				$capability,
-				$menu_slug,
-				array( $this, 'render' )
-			);
-
-			array_push( $this->pages_slugs, $menu_slug );
-
-			if ( isset( $admin_page['sub_menus'] ) && is_array( $admin_page['sub_menus'] ) ) {
-
-				if ( isset( $admin_page['sub_menu_label'] ) ) {
-					add_submenu_page(
-						$menu_slug,
-						$admin_page['sub_menu_label'],
-						$admin_page['sub_menu_label'],
-						$capability,
-						$menu_slug,
-						array( $this, 'render' )
-					);
-				}
-
-				foreach ( $admin_page['sub_menus'] as $sub_page ) {
-					$sub_menu_slug = isset( $sub_page['menu_slug'] ) ? $sub_page['menu_slug'] : sanitize_title_with_dashes( $sub_page['page_title'] );
-
-					add_submenu_page(
-						$menu_slug,
-						$sub_page['page_title'],
-						$sub_page['menu_title'],
-						$capability,
-						$sub_menu_slug,
-						array( $this, 'render' )
-					);
-
-					array_push( $this->pages_slugs, $sub_menu_slug );
-				}
+			// Top level menu page.
+			if ( empty( $admin_page['page_type'] ) || $admin_page['page_type'] === 'menu_page' ) {
+				$this->add_menu_page( $admin_page );
+				continue;
 			}
+
+			// Sub menu page.
+			if ( $admin_page['page_type'] === 'sub_menu' ) {
+				$this->add_submenu_page( $admin_page );
+				continue;
+			}
+
+			// Implement other page types here.
+			// admin_bar or dashboard_menu.
 		}
 	}
+
+	/**
+	 * Adds a top level menu page.
+	 *
+	 * @param array $admin_page The admin page to add.
+	 */
+	public function add_menu_page( array $admin_page ): void {
+
+		$menu_slug = $admin_page['menu_slug'] ?? sanitize_title_with_dashes( $admin_page['page_title'] );
+
+		add_menu_page(
+			$admin_page['page_title'],
+			$admin_page['menu_title'],
+			$admin_page['capability'] ?? 'manage_options',
+			$menu_slug,
+			array( $this, 'render' ),
+			$admin_page['icon_url'] ?? 'dashicons-admin-generic',
+			$admin_page['position'] ?? 10
+		);
+
+		array_push( $this->pages_slugs, $menu_slug );
+	}
+
+	/**
+	 * Adds a submenu page.
+	 *
+	 * @param array $admin_page The admin page to add.
+	 */
+	public function add_submenu_page( array $admin_page ): void {
+
+		$menu_slug = $admin_page['menu_slug'] ?? sanitize_title_with_dashes( $admin_page['page_title'] );
+
+		add_submenu_page(
+			$admin_page['parent_page'] ?? null, // null for hidden menu page.
+			$admin_page['page_title'],
+			$admin_page['menu_title'],
+			$admin_page['capability'] ?? 'manage_options',
+			$menu_slug,
+			array( $this, 'render' )
+		);
+
+		array_push( $this->pages_slugs, $menu_slug );
+	}
+
 
 	/**
 	 * Renders the content of the admin page or submenu page.

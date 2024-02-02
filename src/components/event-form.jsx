@@ -1,5 +1,6 @@
 import { Button, DatePicker, Form, Input, Switch } from 'antd';
 import DynamicFormFields from './dynamic-form-fields';
+import apiFetch from '@wordpress/api-fetch';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -7,16 +8,23 @@ const { TextArea } = Input;
 const EventForm = () => {
 
 	const onFinish = async (values) => {
+
+		console.log( values );
 		try {
-			const response = await fetch('/wp-json/wp/v2/lm-event', {
+			const response = await apiFetch({
+				path: '/wp/v2/lm-events',
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(values),
+				data: {
+					'title' : values.eventName,
+					'content' : JSON.stringify( values.eventFormFields ),
+					'status': 'publish'
+				}
 			});
 
-			if (response.ok) {
+			if (response.ok) { // response.ok não existe hahah chatgpt filha da puta
 				console.log('Event created successfully!');
 				// Handle success, e.g., show a success message or redirect to a success page
 			} else {
@@ -41,30 +49,30 @@ const EventForm = () => {
 		>
 
 			<Form.Item 
-				name="event-name" 
+				name="eventName" 
 				label="Event name" 
 				rules={[{ required: true, message: 'Event name cannot be empty.' }]}
 			>
 				<Input />
 			</Form.Item>
 
-			<Form.Item name="event-start-date" label="Start date">
+			<Form.Item name="eventStartDate" label="Start date">
 				<DatePicker format='DD/MM/YYYY' />
 			</Form.Item>
 
-			<Form.Item name="event-end-date" label="End date">
+			<Form.Item name="eventEndDate" label="End date">
 				<DatePicker format='DD/MM/YYYY' />
 			</Form.Item>
 
-			<Form.Item name="event-registration-period" label="Registration period">
+			<Form.Item name="eventRegistrationPeriod" label="Registration period">
 				<RangePicker format='DD/MM/YYYY' />
 			</Form.Item>
 
-			<Form.Item name="event-require-approval" label="Require approval" defaultChecked={true}>
+			<Form.Item name="eventRequireApproval" label="Require approval" defaultChecked={true}>
 				<Switch />
 			</Form.Item>
 
-			<Form.Item name="event-save-wp-users" label="Create WP user for each registration" defaultChecked="true">
+			<Form.Item name="eventSaveWpUsers" label="Create WP user for each registration" defaultChecked="true">
 				<Switch />
 			</Form.Item>
 
@@ -72,7 +80,7 @@ const EventForm = () => {
 				<DynamicFormFields />
 			</Form.Item>
 
-			<Form.Item name="event-confirmation-email-body" label="Confirmation e-mail body">
+			<Form.Item name="eventConfirmationEmailBody" label="Confirmation e-mail body">
 				<TextArea rows={4} />
 			</Form.Item>
 

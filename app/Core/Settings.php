@@ -22,28 +22,29 @@ class Settings implements Settings_Interface {
 		// Admin Pages.
 		$this->admin_pages = array(
 			array(
-				'page_title'     => __( 'Event Registration', 'event-registration' ),
-				'menu_title'     => __( 'Event Registration', 'event-registration' ),
-				'capability'     => 'manage_options',
-				'menu_slug'      => 'lm-event-registration',
-				'icon_url'       => 'dashicons-tickets-alt',
-				'position'       => 2,
-				'sub_menu_label' => __( 'All Events', 'event-registration' ),
-				'sub_menus'      => array(
-					array(
-						'page_title' => __( 'New Event', 'event-registration' ),
-						'menu_title' => __( 'New Event', 'event-registration' ),
-						'capability' => 'manage_options',
-						'menu_slug'  => 'lm-new-event',
-					),
-					array(
-						'page_title' => __( 'Settings', 'event-registration' ),
-						'menu_title' => __( 'Settings', 'event-registration' ),
-						'capability' => 'manage_options',
-						'menu_slug'  => 'lm-settings',
-					),
-				),
+				'page_title' => __( 'Events', 'event-registration' ),
+				'menu_title' => __( 'Events', 'event-registration' ),
+				'capability' => 'manage_options',
+				'menu_slug'  => 'lm-event-registration',
+				'icon_url'   => 'dashicons-tickets-alt',
+				'position'   => 10,
 			),
+			array(
+				'page_type'   => 'sub_menu', // menu_page (default), sub_menu, admin_bar or dashboard_menu.
+				'parent_page' => 'lm-event-registration',
+				'page_title'  => __( 'All Events', 'event-registration' ),
+				'menu_title'  => __( 'All Events', 'event-registration' ),
+				'capability'  => 'manage_options',
+				'menu_slug'   => 'lm-event-registration',
+			),
+			array(
+				'page_type'   => 'sub_menu', // menu_page (default), sub_menu, admin_bar or dashboard_menu.
+				'parent_page' => 'lm-event-registration',
+				'page_title'  => __( 'Add New Event', 'event-registration' ),
+				'menu_title'  => __( 'Add New Event', 'event-registration' ),
+				'capability'  => 'manage_options',
+				'menu_slug'   => 'lm-new-event',
+			)
 		);
 	}
 

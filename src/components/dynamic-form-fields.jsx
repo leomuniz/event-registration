@@ -4,7 +4,7 @@ import { Button, Checkbox, Form, Input, Select, Space } from 'antd';
 const DynamicFormFields = () => {
 	return (
 		<>
-			<Form.List name="event-form-fields">
+			<Form.List name="eventFormFields">
 				{(fields, { add, remove, move }) => (
 					<>
 					{fields.map(({ key, name, ...restField }, index) => (
@@ -15,7 +15,7 @@ const DynamicFormFields = () => {
 
 							<Form.Item
 								{...restField}
-								name={[name, 'event-form-field-names']}
+								name={[name, 'eventFormFieldName']}
 								rules={[{required: true, message: 'Missing field name'}]}
 							>
 								<Input placeholder="Field Name" />
@@ -23,7 +23,7 @@ const DynamicFormFields = () => {
 
 							<Form.Item
 								{...restField}
-								name={[name, 'event-form-field-types']}
+								name={[name, 'eventFormFieldTypes']}
 								rules={[{required: true, message: 'Missing field type'}]}
 							>
 								<Select
@@ -46,7 +46,7 @@ const DynamicFormFields = () => {
 
 							<Form.Item
 								{...restField}
-								name={[name, 'event-form-fields-required']}
+								name={[name, 'eventFormFieldRequired']}
 								valuePropName="checked" // Checkbox has no value prop, so we need to use valuePropName to set it to checked
 							>
 								<Checkbox>Required</Checkbox>
@@ -54,7 +54,7 @@ const DynamicFormFields = () => {
 
 							<Form.Item
 								{...restField}
-								name={[name, 'event-form-fields-unique']}
+								name={[name, 'eventFormFieldUnique']}
 								valuePropName="checked" // Checkbox has no value prop, so we need to use valuePropName to set it to checked
 							>
 								<Checkbox>Unique</Checkbox>
