@@ -63,7 +63,7 @@ class Pages implements Admin_Pages_Interface {
 			}
 
 			// Implement other page types here.
-			// admin_bar or dashboard_menu.
+			// admin_bar, dashboard_menu and options_page.
 		}
 	}
 

@@ -17,29 +17,16 @@ class Settings implements Settings_Interface {
 
 	private $admin_pages;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 
 		// Admin Pages.
 		$this->admin_pages = array(
 			array(
-				'page_title' => __( 'Events', 'event-registration' ),
-				'menu_title' => __( 'Events', 'event-registration' ),
-				'capability' => 'manage_options',
-				'menu_slug'  => 'lm-event-registration',
-				'icon_url'   => 'dashicons-tickets-alt',
-				'position'   => 10,
-			),
-			array(
 				'page_type'   => 'sub_menu', // menu_page (default), sub_menu, admin_bar or dashboard_menu.
-				'parent_page' => 'lm-event-registration',
-				'page_title'  => __( 'All Events', 'event-registration' ),
-				'menu_title'  => __( 'All Events', 'event-registration' ),
-				'capability'  => 'manage_options',
-				'menu_slug'   => 'lm-event-registration',
-			),
-			array(
-				'page_type'   => 'sub_menu', // menu_page (default), sub_menu, admin_bar or dashboard_menu.
-				'parent_page' => 'lm-event-registration',
+				'parent_page' => 'edit.php?post_type=lm-events',
 				'page_title'  => __( 'Add New Event', 'event-registration' ),
 				'menu_title'  => __( 'Add New Event', 'event-registration' ),
 				'capability'  => 'manage_options',

@@ -63,8 +63,7 @@ class Main {
 	public function load() {
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_post_types' ) );
-		add_action( 'admin_menu', array( $this, 'replace_default_add_new_page' ) );
-
+		add_action( 'admin_init', array( $this, 'remove_duplicated_admin_menu' ) );
 	}
 
 	public function register_post_types() {
@@ -102,19 +101,8 @@ class Main {
 		register_block_type( Plugin\DIR . '/build/blocks/copyright-date-block' );
 	}
 
-
-	function replace_default_add_new_page() {
-		global $submenu;
-	
-		// Replace 'post-new.php?post_type=event' with the URL of your custom React page
-		$submenu['edit.php?post_type=lm-events'][10][2] = 'admin.php?page=lm-new-event';
-	
-		// Loop through the submenu items and replace the 'post.php' URL with your custom React page URL
-		foreach ($submenu['edit.php?post_type=lm-events'] as $key => $item) {
-			if (strpos($item[2], 'post.php') !== false) {
-				$submenu['edit.php?post_type=lm-events'][$key][2] = 'admin.php?page=lm-new-event';
-			}
-		}
+	public function remove_duplicated_admin_menu() {
+		remove_submenu_page( 'edit.php?post_type=lm-events', 'post-new.php?post_type=lm-events' );
 	}
 
 	/**
