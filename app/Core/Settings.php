@@ -25,13 +25,13 @@ class Settings implements Settings_Interface {
 		// Admin Pages.
 		$this->admin_pages = array(
 			array(
-				'page_type'   => 'sub_menu', // menu_page (default), sub_menu, admin_bar or dashboard_menu.
+				'page_type'   => 'sub_menu', // menu_page (default), sub_menu, admin_bar, dashboard_menu or options_page.
 				'parent_page' => 'edit.php?post_type=lm-events',
 				'page_title'  => __( 'Add New Event', 'event-registration' ),
 				'menu_title'  => __( 'Add New Event', 'event-registration' ),
 				'capability'  => 'manage_options',
-				'menu_slug'   => 'lm-new-event',
-			)
+				'menu_slug'   => 'lm-edit-event',
+			),
 		);
 	}
 

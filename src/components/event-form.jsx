@@ -1,39 +1,103 @@
+import { useState } from 'react';
+import { useDispatch } from '@wordpress/data';
 import { Button, DatePicker, Form, Input, Switch } from 'antd';
 import DynamicFormFields from './dynamic-form-fields';
 import apiFetch from '@wordpress/api-fetch';
+import { store as noticesStore } from '@wordpress/notices';
+import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const EventForm = () => {
 
+	const { scriptData } = window;
+
+	const postContent = ( scriptData && scriptData.postData ) ?
+		JSON.parse( scriptData.postData.post_content ) :
+		{};
+
+	console.log( postContent );
+
+	const initialValues = 
+		scriptData && scriptData.postData ? 
+		{
+			eventName: scriptData.postData.post_title,
+			eventPeriod: postContent && postContent.eventPeriod ? 
+				[
+					dayjs( postContent.eventPeriod[0] ),
+					dayjs( postContent.eventPeriod[1] ),
+				] : 
+				null,
+			eventRegistrationPeriod: postContent && postContent.registrationPeriod ? 
+				[
+					dayjs( postContent.registrationPeriod[0] ),
+					dayjs( postContent.registrationPeriod[1] ),
+				] :
+				null,
+			eventRequireApproval: postContent.requireApproval,
+			eventSaveWpUsers: postContent.saveWPUsers,
+			eventFormFields: postContent.fields,
+			eventConfirmationEmailBody: postContent.emailBody,
+		} :
+		{};
+
+	const { createErrorNotice, createSuccessNotice, createInfoNotice, removeAllNotices } = useDispatch( noticesStore );
+
+	const [loading, setLoading] = useState(false);
+
 	const onFinish = async (values) => {
 
+		removeAllNotices();
+		setLoading( true );
+
 		console.log( values );
+
+		const apiPath = scriptData && scriptData.postData && scriptData.postData.ID
+		? `/wp/v2/lm-events/${scriptData.postData.ID}`
+		: '/wp/v2/lm-events';
+
 		try {
 			const response = await apiFetch({
-				path: '/wp/v2/lm-events',
+				path: apiPath,
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				data: {
 					'title' : values.eventName,
-					'content' : JSON.stringify( values.eventFormFields ),
+					'content' : JSON.stringify( 
+						{
+							eventPeriod: values.eventPeriod,
+							registrationPeriod: values.eventRegistrationPeriod,
+							requireApproval: values.eventRequireApproval,
+							saveWPUsers: values.eventSaveWpUsers,
+							fields: values.eventFormFields,
+							emailBody: values.eventConfirmationEmailBody,
+						}
+					),
 					'status': 'publish'
 				}
 			});
 
-			if (response.ok) { // response.ok não existe hahah chatgpt filha da puta
-				console.log('Event created successfully!');
-				// Handle success, e.g., show a success message or redirect to a success page
+			setLoading( false );
+
+			console.log( response );
+
+			window.scrollTo( { top: 0, behavior: 'smooth' } );
+
+			if ( response.id ) {
+				const noticeMsg = 
+					scriptData && scriptData.postData ?
+					'Your event was updated successfully.' :
+					'Your event was created successfully.';
+
+				createSuccessNotice( noticeMsg );
 			} else {
-				console.error('Failed to create event:', response.statusText);
-				// Handle error, e.g., show an error message
+				createErrorNotice( 'It was not possible to create your event. Please try again later or contact support.' );
 			}
 		} catch (error) {
-			console.error('An error occurred:', error);
-			// Handle error, e.g., show an error message
+			createErrorNotice( 'It was not possible to create your event. Please try again later or contact support.' );
 		}
 	};
 
@@ -46,6 +110,7 @@ const EventForm = () => {
 			layout="horizontal"
 			style={{ maxWidth: 920 }}
 			scrollToFirstError
+			initialValues={initialValues}
 		>
 
 			<Form.Item 
@@ -56,12 +121,8 @@ const EventForm = () => {
 				<Input />
 			</Form.Item>
 
-			<Form.Item name="eventStartDate" label="Start date">
-				<DatePicker format='DD/MM/YYYY' />
-			</Form.Item>
-
-			<Form.Item name="eventEndDate" label="End date">
-				<DatePicker format='DD/MM/YYYY' />
+			<Form.Item name="eventPeriod" label="Event period">
+				<RangePicker format='DD/MM/YYYY' />
 			</Form.Item>
 
 			<Form.Item name="eventRegistrationPeriod" label="Registration period">
@@ -85,7 +146,7 @@ const EventForm = () => {
 			</Form.Item>
 
 			<Form.Item label="">
-				<Button type="primary" htmlType="submit">Save</Button>
+				<Button type="primary" htmlType="submit" loading={loading}>Save</Button>
 			</Form.Item>
 		</Form>
 	);

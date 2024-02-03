@@ -142,8 +142,9 @@ class Pages implements Admin_Pages_Interface {
 			'dependencies' => array( 'wp-element', 'wp-components', 'wp-i18n', 'wp-api-fetch' ),
 		);
 
-		if ( file_exists( Plugin\DIR . '/build/' . $page_slug . '.asset.php' ) ) {
-			$deps = require Plugin\DIR . '/build/' . $page_slug . '.asset.php';
+		// This needs to be improved to take care of dependencies in other folders.
+		if ( file_exists( Plugin\DIR . '/build/admin/' . $page_slug . '.asset.php' ) ) {
+			$deps = require Plugin\DIR . '/build/admin/' . $page_slug . '.asset.php';
 		}
 
 		wp_enqueue_script(

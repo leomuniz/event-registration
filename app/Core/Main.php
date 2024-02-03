@@ -64,6 +64,8 @@ class Main {
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_post_types' ) );
 		add_action( 'admin_init', array( $this, 'remove_duplicated_admin_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_js_variables' ) );
+		add_filter( 'post_row_actions', array( $this, 'event_row_actions' ), 10, 2 );
 	}
 
 	public function register_post_types() {
@@ -103,6 +105,46 @@ class Main {
 
 	public function remove_duplicated_admin_menu() {
 		remove_submenu_page( 'edit.php?post_type=lm-events', 'post-new.php?post_type=lm-events' );
+	}
+
+	function event_row_actions( $actions, $post ) {
+
+		// Remove unneded actions.
+		if ( $post->post_type === 'lm-events' ) {
+			unset( $actions['view'] );
+			unset( $actions['inline hide-if-no-js'] );
+		}
+
+		// Tweak the edit link.
+		$edit_link       = admin_url( 'edit.php?post_type=lm-events&page=lm-edit-event&post=' . $post->ID );
+		$actions['edit'] = '<a href="' . $edit_link . '">' . __( 'Edit', 'event-registration' ) . '</a>';
+
+		return $actions;
+	}
+
+	public function admin_js_variables() {
+
+		$page = get_current_screen();
+
+		if ( $page->base !== 'lm-events_page_lm-edit-event' ) {
+			return;
+		}
+
+		$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : null;
+
+		if ( $post_id ) {
+			$handle = 'event-registration-admin-lm-edit-event-script';
+
+			$post_data = get_post( $post_id );
+
+			wp_localize_script(
+				$handle,
+				'scriptData',
+				array(
+					'postData' => $post_data,
+				)
+			);
+		}
 	}
 
 	/**

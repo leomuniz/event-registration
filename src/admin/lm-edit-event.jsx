@@ -13,9 +13,11 @@ const domElement = document.getElementById('page-content');
 
 const PageContent = () => {
 
+	const { scriptData } = window;
+
 	return (
 		<AdminLayout
-			title="New Event"
+			title={ scriptData && scriptData.postData ? 'Edit Event' : 'Add New Event' }
 			content={
 				<EventForm />
 			} 

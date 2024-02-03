@@ -1,9 +1,15 @@
-import { Layout, theme, Typography, DatePicker, Input } from 'antd';
-  
-const { Header, Content, Footer } = Layout;
+import { Layout, theme, Typography, Alert } from 'antd';
+import { useSelect } from '@wordpress/data';
+import { store as noticesStore } from '@wordpress/notices';
+
+const { Content, Footer } = Layout;
 const { Title } = Typography;
 
 const AdminLayout = ({ title, content }) => {
+
+	const { notices } = useSelect( ( select ) => ( {
+		notices: select( noticesStore ).getNotices(),
+	} ), [] );
 
 	const {
 		token: { colorBgContainer, borderRadiusLG },
@@ -12,6 +18,11 @@ const AdminLayout = ({ title, content }) => {
 	return (
 		<>
 			<Title level={1} className="wp-heading-inline">{title}</Title>
+
+			{ notices.map( ( notice ) => (
+				<Alert key={ notice.ID }  message={ notice.content } type={ notice.status } />
+			) ) }
+
 			<Layout
 				style={{
 					background: '#f0f0f1',
